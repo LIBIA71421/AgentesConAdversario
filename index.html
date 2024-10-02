@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tres en Raya</title>
+    <style>
+        #tablero {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+        }
+        .celda {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tres en Raya</h1>
+    <div id="tablero"></div>
+    <button id="reset">Reiniciar juego</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const tableroElement = document.getElementById('tablero');
+        const resetButton = document.getElementById('reset');
+
+        for (let fila = 0; fila < 3; fila++) {
+            for (let columna = 0; columna < 3; columna++) {
+                const celda = document.createElement('div');
+                celda.classList.add('celda');
+                celda.dataset.fila = fila;
+                celda.dataset.columna = columna;
+                celda.addEventListener('click', () => {
+                    console.log(`Click en fila ${fila}, columna ${columna}`); 
+                    socket.emit('jugador_humano_move', { fila: fila, columna: columna });
+                });
+                tableroElement.appendChild(celda);
+            }
+        }
+
+        socket.on('game_state', (data) => {
+            console.log('Estado del tablero recibido del servidor:', data.tablero); 
+            const celdas = document.querySelectorAll('.celda');
+            data.tablero.forEach((fila, i) => {
+                fila.forEach((valor, j) => {
+                    celdas[i * 3 + j].textContent = valor;
+                });
+            });
+        });
+
+        socket.on('game_over', (data) => {
+            alert(`¡Ganador: ${data.winner}!`);
+        });
+
+        socket.on('invalid_move', (data) => {
+            alert(data.message);
+        });
+
+        resetButton.addEventListener('click', () => {
+            console.log('Reiniciar juego');
+            socket.emit('reset_game');
+        });
+    </script>
+</body>
+</html>

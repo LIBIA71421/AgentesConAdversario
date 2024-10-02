@@ -1,0 +1,137 @@
+''' ALGORTMO AGENTES CON ADVERSARIO
+ def MiniMax(estado, jugador):
+    Entrada: estado
+    Salida:utilidad
+ 1. si estado es erminal entonces
+ 2.     devolver utilidad
+ 3. fin si
+ 4. si jugador == Max entonces
+ 5.     devolver valorMax(estado)
+ 6. fin si
+ 7. si jugador == Min entonces
+ 8.     devolver valorMin(estado)
+ 9. fin si
+ 
+ def valorMax(estado):
+    Entrada: estado
+    Salida: utilidad
+    v -> -alpha
+ 1. para hijo en Sucesor(estado) hacer
+ 2.     v = max(v, miniMax(hijo, Min))
+ 3. fin para
+ 4. devolver v
+ 
+ def valorMin(estado):
+    Entrada: estado
+    Salida: utilidad
+    v -> +alpha
+ 1. para hijo en Sucesor(estado) hacer
+ 2.     v = min(v, miniMax(hijo, Max))
+ 3. fin para
+ 4. devolver v
+ 
+ 
+ 
+ diccionario con las utilidades
+ 
+ ------------------------------------------------------------------------------------------------------
+ Agente.py
+ AgenteJugador.py
+ AgenteBuscador.py
+ AgenteRSP
+ entorno
+
+ AgenteGrafo.py
+ AgenteTresEnRaya.py
+ Grafo.py
+ HumanoGrafo.py
+ HumanoTresEnRaya.py
+ main.py
+ ------------------------------------------------------------------------------------------------------
+ def MiniMax(estado, jugador):
+    """
+    Algoritmo MiniMax para juegos de dos jugadores.
+    
+    Parámetros:
+    estado: El estado actual del juego.
+    jugador: El jugador actual (Max o Min).
+    
+    Retorna:
+    La utilidad del estado.
+    """
+    if es_terminal(estado):
+        return utilidad(estado)
+    
+    if jugador == 'Max':
+        return valorMax(estado)
+    else:  # jugador == 'Min'
+        return valorMin(estado)
+
+def valorMax(estado):
+    """
+    Función para calcular el valor máximo para el jugador Max.
+    
+    Parámetros:
+    estado: El estado actual del juego.
+    
+    Retorna:
+    La utilidad máxima posible.
+    """
+    v = float('-inf')
+    for hijo in sucesores(estado):
+        v = max(v, MiniMax(hijo, 'Min'))
+    return v
+
+def valorMin(estado):
+    """
+    Función para calcular el valor mínimo para el jugador Min.
+    
+    Parámetros:
+    estado: El estado actual del juego.
+    
+    Retorna:
+    La utilidad mínima posible.
+    """
+    v = float('inf')
+    for hijo in sucesores(estado):
+        v = min(v, MiniMax(hijo, 'Max'))
+    return v
+
+def es_terminal(estado):
+    """
+    Verifica si el estado es terminal.
+    
+    Parámetros:
+    estado: El estado actual del juego.
+    
+    Retorna:
+    True si es terminal, False en caso contrario.
+    """
+    # Implementar la lógica para determinar si el estado es terminal
+    pass
+
+def utilidad(estado):
+    """
+    Calcula la utilidad del estado.
+    
+    Parámetros:
+    estado: El estado actual del juego.
+    
+    Retorna:
+    Un valor que representa la utilidad del estado.
+    """
+    # Implementar la lógica para calcular la utilidad
+    pass
+
+def sucesores(estado):
+    """
+    Genera los estados sucesores a partir del estado actual.
+    
+    Parámetros:
+    estado: El estado actual del juego.
+ 
+ 
+ 
+'''
+
+
